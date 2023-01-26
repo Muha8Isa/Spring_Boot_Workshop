@@ -11,7 +11,6 @@ import javax.transaction.Transactional;
 import java.util.Collection;
 import java.util.Optional;
 
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @Repository
 public class AppUserDAOimpl implements AppUserDao {

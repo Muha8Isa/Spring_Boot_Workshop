@@ -1,9 +1,9 @@
 package se.lexicon.spring_boot_workshop.DAO.implementation;
 
 import org.springframework.stereotype.Repository;
-import se.lexicon.spring_boot_workshop.DAO.DetailsDAO;
+import se.lexicon.spring_boot_workshop.DAO.BookLoanDAO;
 import se.lexicon.spring_boot_workshop.exception.DataNotFoundException;
-import se.lexicon.spring_boot_workshop.models.Details;
+import se.lexicon.spring_boot_workshop.models.BookLoan;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -11,24 +11,23 @@ import javax.transaction.Transactional;
 import java.util.Collection;
 import java.util.Optional;
 
-
 @Repository
-public class DetailsDAOimpl implements DetailsDAO {
+public class BookLoanDAOimpl implements BookLoanDAO {
 
     @PersistenceContext
     EntityManager entityManager;
 
     @Override
     @Transactional
-    public Details create(Details details) {
-        entityManager.persist(details);
-        return details;
+    public BookLoan create(BookLoan bookLoan) {
+        entityManager.persist(bookLoan);
+        return bookLoan;
     }
 
     @Override
     @Transactional
-    public Optional<Details> findById(Integer id) {
-        return entityManager.createNamedQuery("details.findById", Details.class)
+    public Optional<BookLoan> findById(Integer id) {
+        return entityManager.createNamedQuery("appUser.findById", BookLoan.class)
                 .setParameter(1,id)
                 .getResultStream()
                 .findFirst();
@@ -36,24 +35,23 @@ public class DetailsDAOimpl implements DetailsDAO {
 
     @Override
     @Transactional
-    public Collection<Details> findAll() {
-        return entityManager.createQuery("select d from Details d", Details.class)
+    public Collection<BookLoan> findAll() {
+        return entityManager.createQuery("select b from BookLoan b", BookLoan.class)
                 .getResultList();
     }
 
     @Override
     @Transactional
-    public Details update(Details details) {
-        return entityManager.merge(details);
+    public BookLoan update(BookLoan bookLoan) {
+        return entityManager.merge(bookLoan);
     }
 
     @Override
     @Transactional
     public void remove(Integer id) throws DataNotFoundException {
-        Details result = entityManager.find(Details.class, id);
+        BookLoan result = entityManager.find(BookLoan.class, id);
         if (result != null){
             entityManager.remove(result);
-        } else throw new DataNotFoundException("AppUser was not found");
-
+        } else throw new DataNotFoundException("BookLoan was not found");
     }
 }

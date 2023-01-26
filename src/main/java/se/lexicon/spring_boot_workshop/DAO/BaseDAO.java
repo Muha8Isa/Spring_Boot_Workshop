@@ -8,6 +8,7 @@ import java.util.Optional;
 public interface BaseDAO <T, ID> {
 
     T create(T t);
+
     Optional<T> findById(ID id);
 
     Collection<T> findAll();
