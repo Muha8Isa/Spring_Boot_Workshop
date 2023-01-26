@@ -22,8 +22,7 @@ public class AppUser {
     @JoinColumn( name = "DTLS_ID")
     Details details;
 
-    public AppUser(int appUserId, String username, String password, Details details) {
-        AppUserId = appUserId;
+    public AppUser(String username, String password, Details details) {
         this.username = username;
         this.password = password;
         this.details = details;

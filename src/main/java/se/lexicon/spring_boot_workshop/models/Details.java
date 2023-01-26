@@ -35,8 +35,7 @@ public class Details {
     public Details() {
     }
 
-    public Details(int detailsId, String name, String email, LocalDate birthDate) {
-        this.detailsId = detailsId;
+    public Details(String name, String email, LocalDate birthDate) {
         this.name = name;
         this.email = email;
         this.birthDate = birthDate;

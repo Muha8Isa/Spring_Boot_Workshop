@@ -1,7 +1,11 @@
 package se.lexicon.spring_boot_workshop.models;
 
+import org.aspectj.bridge.ILifecycleAware;
+
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @NamedQuery(name = "book.findById", query = "select b from Book b where b.id = ?1")
@@ -18,11 +22,13 @@ public class Book {
     String title;
     int maxLoanDays;
 
+    @ManyToMany(mappedBy = "writtenBooks")
+    Set<Author> authors;
+
     public Book() { // Class 'Book' should have [public, protected] no-arg constructor, that is why this constructor is used.
     }
 
-    public Book(int bookId, String isbn, String title, int maxLoanDays) {
-        this.bookId = bookId;
+    public Book(String isbn, String title, int maxLoanDays) {
         this.isbn = isbn;
         this.title = title;
         this.maxLoanDays = maxLoanDays;
@@ -30,10 +36,6 @@ public class Book {
 
     public int getBookId() {
         return bookId;
-    }
-
-    public void setBookId(int bookId) {
-        this.bookId = bookId;
     }
 
     public String getIsbn() {
@@ -58,6 +60,28 @@ public class Book {
 
     public void setMaxLoanDays(int maxLoanDays) {
         this.maxLoanDays = maxLoanDays;
+    }
+
+    public Set<Author> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(Set<Author> authors) {
+        this.authors = authors;
+    }
+
+    public void addAuthor(Author author){
+    if (author == null) throw new IllegalArgumentException("author data was null");
+    if (authors == null) authors = new HashSet<>();
+    authors.add(author);
+    author.addBook(this); // For the other side.
+    }
+    public void removeAuthor(Author author){
+        if (author == null) throw new IllegalArgumentException("author data was null");
+        if (authors != null){
+            author.removeBook(this);
+            authors.remove(author);
+        }
     }
 
     @Override
