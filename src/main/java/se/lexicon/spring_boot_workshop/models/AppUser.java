@@ -2,6 +2,8 @@ package se.lexicon.spring_boot_workshop.models;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 @NamedQuery(name = "appUser.findById", query = "select a from AppUser a where a.id = ?1")
@@ -21,6 +23,9 @@ public class AppUser {
     @OneToOne
     @JoinColumn( name = "DTLS_ID")
     Details details;
+
+    @OneToMany(mappedBy = "borrower")
+    List<BookLoan> loanList;
 
     public AppUser(String username, String password, Details details) {
         this.username = username;
@@ -64,5 +69,37 @@ public class AppUser {
 
     public void setDetails(Details details) {
         this.details = details;
+    }
+
+    public List<BookLoan> getLoanList() {
+        return loanList;
+    }
+
+    public void setLoanList(List<BookLoan> loanList) {
+        this.loanList = loanList;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AppUser appUser = (AppUser) o;
+        return AppUserId == appUser.AppUserId && Objects.equals(username, appUser.username) && Objects.equals(password, appUser.password) && Objects.equals(regDate, appUser.regDate) && Objects.equals(details, appUser.details) && Objects.equals(loanList, appUser.loanList);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(AppUserId, username, password, regDate, details, loanList);
+    }
+
+    @Override
+    public String toString() {
+        return "AppUser{" +
+                "AppUserId=" + AppUserId +
+                ", username='" + username + '\'' +
+                ", regDate=" + regDate +
+                ", details=" + details +
+                ", loanList=" + loanList +
+                '}';
     }
 }
